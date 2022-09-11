@@ -1,0 +1,56 @@
+//mongodb connection
+const mongoose = require('mongoose')
+const url = "mongodb://localhost:27017/newdb";
+const connectDBs = async () =>{
+    try {
+        await mongoose.connect(url,{
+            useUnifiedTopology : true,
+            useNewUrlParser:true
+            
+        });
+    } catch (error) {
+        console.log(err);
+    }
+
+}
+module.exports = connectDBs
+step2://connect to mongodb in main file
+connectDB()
+mongoose.connection.once('open',()=>{
+    console.log('database connected sucessfully');
+})
+step3:to import mongoose
+const mongoose = require('mongoose')
+step4:
+const connectDB = require('./db/connectdb') //file folder name
+const mongoDBs = require('./db/connectdb') //import database
+
+//boiler plate for express connection
+const express = require('express')
+const  mongoose = require('mongoose')
+const app = express()
+const path = require('path')
+
+const connectDB = require('./db/connectdb')
+const mongoDBs = require('./db/connectdb') //import database
+
+const port = process.env.PORT || 3002
+
+
+//use npm start to start server
+app.get('/',(req,res)=>{
+    res.send('Hello world')
+})
+//static file
+app.use(express.static('public'))
+
+
+//connect to mongodb
+connectDB()
+mongoose.connection.once('open',()=>{
+    console.log('database connected sucessfully');
+})
+
+app.listen(port,()=>{
+    console.log('running at port number 3002')
+})
